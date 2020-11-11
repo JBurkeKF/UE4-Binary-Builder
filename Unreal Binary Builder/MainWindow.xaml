@@ -47,7 +47,7 @@
 			<Button x:Name="CustomBuildXMLBrowse" Content="{materialDesign:PackIcon OpenInBrowser}" ToolTip="(Optional) Browse and select InstalledEngineBuild.xml" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="365,94,0,0" Click="CustomBuildXMLBrowse_Click"/>
 			<Button x:Name="ResetDefaultBuildXML" Content="{materialDesign:PackIcon Xml}" ToolTip="Reset to default InstalledEngineBuild.xml" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="418,96,0,0" Click="ResetDefaultBuildXML_Click"/>
 
-			<GroupBox Header="Platforms" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,133,0,0" Width="456" Height="253">
+			<GroupBox Header="Platforms" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,133,0,0" Width="456" Height="283">
 				<Grid>
 					<Label Content ="Host Only" Margin="0,11,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" ToolTip="A helper option to make an installed build for your host platform only, so that you don't have to disable each platform individually"/>
 					<ToggleButton x:Name="bHostPlatformOnly" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="78,12,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -67,8 +67,8 @@
 					<Label Content ="Linux" Margin="0,140,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0"/>
 					<ToggleButton x:Name="bWithLinux" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="78,140,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-					<Label x:Name="bWithLinuxAArch64Label" Content ="LinuxAArch64" Margin="286,172,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0"/>
-					<ToggleButton x:Name="bWithLinuxAArch64" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,172,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+					<Label x:Name="bWithLinuxAArch64Label" Content ="LinuxAArch64" Margin="286,202,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0"/>
+					<ToggleButton x:Name="bWithLinuxAArch64" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,202,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
 					<Label Content ="Android" Margin="160,48,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
 					<ToggleButton x:Name="bWithAndroid" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="237,47,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -85,16 +85,16 @@
 					<Label x:Name="bWithSwitchLabel" Content ="Switch" Margin="160,171,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0"/>
 					<ToggleButton x:Name="bWithSwitch" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="237,171,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-					<Label x:Name="bWithPS4Label" Content ="PS4" Margin="286,48,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
-					<ToggleButton x:Name="bWithPS4" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,47,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+					<Label x:Name="bWithPS4Label" Content ="PS4" Margin="160,201,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
+					<ToggleButton x:Name="bWithPS4" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="237,201,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
 					<Label x:Name="bWithXboxOneLabel" Content ="XBox One" Margin="286,77,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
 					<ToggleButton x:Name="bWithXboxOne" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,76,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-					<Label Content ="Lumin" Margin="286,109,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
-					<ToggleButton x:Name="bWithLumin" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,108,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+					<Label Content ="Lumin" Margin="286,139,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
+					<ToggleButton x:Name="bWithLumin" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,138,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-					<Label Content ="HoloLens" Margin="286,141,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0">
+					<Label Content ="HoloLens" Margin="286,171,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0">
 						<Label.IsEnabled>
 							<MultiBinding Converter="{StaticResource booleanAndNotConverter}">
 								<Binding ElementName="bHostPlatformOnly" Path="IsChecked" Mode="OneWay" />
@@ -102,7 +102,7 @@
 							</MultiBinding>
 						</Label.IsEnabled>
 					</Label>
-					<ToggleButton x:Name="bWithHoloLens" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,140,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+					<ToggleButton x:Name="bWithHoloLens" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,170,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
 						<ToggleButton.IsEnabled>
 							<MultiBinding Converter="{StaticResource booleanAndNotConverter}">
 								<Binding ElementName="bHostPlatformOnly" Path="IsChecked" Mode="OneWay" />
@@ -110,10 +110,16 @@
 							</MultiBinding>
 						</ToggleButton.IsEnabled>
 					</ToggleButton>
-				</Grid>
+
+                    <Label x:Name="bWithPS5Label" Content ="PS5" Margin="286,48,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
+                    <ToggleButton x:Name="bWithPS5" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,47,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+                    <Label x:Name="bWithXSXLabel" Content ="XSX" Margin="286,107,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0" />
+                    <ToggleButton x:Name="bWithXSX" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Margin="396,106,0,0" IsEnabled="{Binding IsChecked, Converter={StaticResource NotConverter}, ElementName=bHostPlatformOnly}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                </Grid>
 			</GroupBox>
 
-			<GroupBox Header="Options" VerticalAlignment="Top" Margin="477,9,0,0" Height="377" Width="617" HorizontalAlignment="Left">
+			<GroupBox Header="Options" VerticalAlignment="Top" Margin="477,9,0,0" Height="407" Width="617" HorizontalAlignment="Left">
 				<Grid>
 					<ToggleButton x:Name="bWithDDC" Style="{DynamicResource MaterialDesignSwitchToggleButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" IsChecked="True"/>
 					<Label Content="Include DDC" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="45,5,0,0" ToolTip="Build a standalone derived-data cache for the engine content and templates.
@@ -169,7 +175,7 @@
 				<ComboBoxItem x:Name="comboBoxItem4" Content="4.25 and above"/>
 			</ComboBox>
 
-			<local:LogViewer x:Name="LogControl" Margin="10,391,8,47" Height="Auto" Width="Auto"/>
+			<local:LogViewer x:Name="LogControl" Margin="10,411,8,17" Height="Auto" Width="Auto"/>
 
 			<Label x:Name="StepLabel" Content="Step: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,17" Padding="0"/>
 			<Label x:Name="StatusLabel" Content="Status: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,0,0,17" Padding="0"/>

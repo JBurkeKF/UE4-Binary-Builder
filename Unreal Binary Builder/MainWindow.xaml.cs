@@ -68,6 +68,8 @@ namespace Unreal_Binary_Builder
             bWithSwitch.IsChecked = Settings.Default.bWithSwitch;
             bWithPS4.IsChecked = Settings.Default.bWithPS4;
             bWithXboxOne.IsChecked = Settings.Default.bWithXboxOne;
+			bWithPS5.IsChecked = Settings.Default.bWithPS5;
+			bWithXSX.IsChecked = Settings.Default.bWithXSX;
             bWithLumin.IsChecked = Settings.Default.bWithLumin;
 
             bWithDDC.IsChecked = Settings.Default.bWithDDC;
@@ -198,6 +200,8 @@ namespace Unreal_Binary_Builder
             Settings.Default.bWithSwitch = (bool)bWithSwitch.IsChecked;
             Settings.Default.bWithPS4 = (bool)bWithPS4.IsChecked;
             Settings.Default.bWithXboxOne = (bool)bWithXboxOne.IsChecked;
+			Settings.Default.bWithPS5 = (bool)bWithPS5.IsChecked;
+			Settings.Default.bWithXSX = (bool)bWithXSX.IsChecked;
             Settings.Default.bWithLumin = (bool)bWithLumin.IsChecked;
 
             Settings.Default.bWithDDC = (bool)bWithDDC.IsChecked;
@@ -454,10 +458,12 @@ namespace Unreal_Binary_Builder
                 
                 if (SupportConsoles())
                 {
-                    CommandLineArgs += string.Format(" -set:WithSwitch={0} -set:WithPS4={1} -set:WithXboxOne={2}",
+					// TODO: XSX support
+                    CommandLineArgs += string.Format(" -set:WithSwitch={0} -set:WithPS4={1} -set:WithXboxOne={2} -set:WithPS5={3}",
                     GetConditionalString(bWithSwitch.IsChecked),
                     GetConditionalString(bWithPS4.IsChecked),
-                    GetConditionalString(bWithXboxOne.IsChecked));
+                    GetConditionalString(bWithXboxOne.IsChecked),
+					GetConditionalString(bWithPS5.IsChecked));
                 }
 
                 if (SupportLinuxAArch64())
@@ -576,10 +582,10 @@ namespace Unreal_Binary_Builder
 				MessageBox.Show("HTML5 support was removed from Unreal Engine 4.24 and higher. You had it enabled but since it is of no use, I disabled it.");
 			}
 
-            if (SupportConsoles() == false && (bWithSwitch.IsChecked == true || bWithPS4.IsChecked == true || bWithXboxOne.IsChecked == true))
+            if (SupportConsoles() == false && (bWithSwitch.IsChecked == true || bWithPS4.IsChecked == true || bWithXboxOne.IsChecked == true || bWithPS5.IsChecked == true || bWithXSX.IsChecked == true))
             {
                 GameAnalyticsCSharp.AddDesignEvent($"Build:Console:IncorrectEngine:{GetEngineName()}");
-                bWithSwitch.IsChecked = bWithPS4.IsChecked = bWithXboxOne.IsChecked = false;
+                bWithSwitch.IsChecked = bWithPS4.IsChecked = bWithXboxOne.IsChecked = bWithPS5.IsChecked = bWithXSX.IsChecked = false;
                 MessageBox.Show("Console support was removed from Unreal Engine 4.25 and higher. You had it enabled but since it is of no use, I disabled it.");
             }
 
@@ -681,7 +687,7 @@ namespace Unreal_Binary_Builder
 			bWithServer.IsEnabled = bWithClient.IsEnabled = bWithServerLabel.IsEnabled = bWithClientLabel.IsEnabled = EngineVersionSelection.SelectedIndex > 1;
 			bWithHTML5.IsEnabled = bWithHTML5Label.IsEnabled = SupportHTML5();
             bWithLinuxAArch64.IsEnabled = bWithLinuxAArch64Label.IsEnabled = SupportLinuxAArch64();
-            bWithSwitch.IsEnabled = bWithSwitchLabel.IsEnabled = bWithPS4.IsEnabled = bWithPS4Label.IsEnabled = bWithXboxOne.IsEnabled = bWithXboxOneLabel.IsEnabled = SupportConsoles();
+            bWithSwitch.IsEnabled = bWithSwitchLabel.IsEnabled = bWithPS4.IsEnabled = bWithPS4Label.IsEnabled = bWithXboxOne.IsEnabled = bWithXboxOneLabel.IsEnabled = bWithPS5.IsEnabled = bWithPS5Label.IsEnabled = bWithXSX.IsEnabled = bWithXSXLabel.IsEnabled = SupportConsoles();
             bCompileDatasmithPlugins.IsEnabled = bCompileDatasmithPluginsLabel.IsEnabled = bVS2019.IsEnabled = bVS2019Label.IsEnabled = IsEngineSelection425OrAbove();
 		}
 
@@ -697,7 +703,7 @@ namespace Unreal_Binary_Builder
 
         private bool SupportConsoles()
         {
-            return EngineVersionSelection.SelectedIndex <= 3;
+            return EngineVersionSelection.SelectedIndex <= 4;
 		}
 
         private bool IsEngineSelection425OrAbove()
