@@ -16,7 +16,7 @@
 		TextOptions.TextRenderingMode="Auto"
 		Icon="application.ico"
 		FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-		Title="Unreal Engine Binary Builder" Height="800" Width="1111.5" WindowStartupLocation="CenterScreen" Closing="UnrealBinaryBuilderWindow_Closing">
+		Title="Unreal Engine Binary Builder" Height="840" Width="1111.5" WindowStartupLocation="CenterScreen" Closing="UnrealBinaryBuilderWindow_Closing">
 	<Window.Resources>
 		<Converters:NotConverter x:Key="NotConverter"/>
 		<converterNamespace:BooleanAndNotConverter x:Key="booleanAndNotConverter" />
@@ -175,7 +175,7 @@
 				<ComboBoxItem x:Name="comboBoxItem4" Content="4.25 and above"/>
 			</ComboBox>
 
-			<local:LogViewer x:Name="LogControl" Margin="10,411,8,17" Height="Auto" Width="Auto"/>
+			<local:LogViewer x:Name="LogControl" Margin="10,421,8,47" Height="Auto" Width="Auto"/>
 
 			<Label x:Name="StepLabel" Content="Step: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,17" Padding="0"/>
 			<Label x:Name="StatusLabel" Content="Status: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,0,0,17" Padding="0"/>
