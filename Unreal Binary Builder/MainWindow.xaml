@@ -16,7 +16,7 @@
 		TextOptions.TextRenderingMode="Auto"
 		Icon="application.ico"
 		FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-		Title="Unreal Engine Binary Builder" Height="840" Width="1111.5" WindowStartupLocation="CenterScreen" Closing="UnrealBinaryBuilderWindow_Closing">
+		Title="Unreal Engine Binary Builder" Height="870" Width="1111.5" WindowStartupLocation="CenterScreen" Closing="UnrealBinaryBuilderWindow_Closing">
 	<Window.Resources>
 		<Converters:NotConverter x:Key="NotConverter"/>
 		<converterNamespace:BooleanAndNotConverter x:Key="booleanAndNotConverter" />
@@ -175,13 +175,13 @@
 				<ComboBoxItem x:Name="comboBoxItem4" Content="4.25 and above"/>
 			</ComboBox>
 
-			<local:LogViewer x:Name="LogControl" Margin="10,421,8,47" Height="Auto" Width="Auto"/>
+			<local:LogViewer x:Name="LogControl" Margin="10,421,8,77" Height="Auto" Width="Auto"/>
 
-			<Label x:Name="StepLabel" Content="Step: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,17" Padding="0"/>
-			<Label x:Name="StatusLabel" Content="Status: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="90,0,0,17" Padding="0"/>
-			<Label x:Name="ProcessedFilesLabel" Content="[Compiled: ]" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="355,0,0,17" Padding="0" />
-			<Button x:Name="PostBuildSettings" Style="{DynamicResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Post-Build Settings" Margin="0,0,100,10" Click="PostBuildSettings_Click" />
-			<Button x:Name="BuildRocketUE" Style="{DynamicResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Start Build" Margin="0,0,10,10" Click="BuildRocketUE_Click"/>
+			<Label x:Name="StepLabel" Content="Step: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,47" Padding="0"/>
+			<Label x:Name="StatusLabel" Content="Status: " VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,0,47" Padding="0"/>
+			<Label x:Name="ProcessedFilesLabel" Content="[Compiled: ]" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,17" Padding="0" />
+			<Button x:Name="PostBuildSettings" Style="{DynamicResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Post-Build Settings" Margin="0,0,100,40" Click="PostBuildSettings_Click" />
+			<Button x:Name="BuildRocketUE" Style="{DynamicResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Start Build" Margin="0,0,10,40" Click="BuildRocketUE_Click"/>
 
 			<materialDesign:DialogHost x:Name="AboutDialog" IsOpen="False" CloseOnClickAway="True">
 				<materialDesign:DialogHost.DialogContent>
