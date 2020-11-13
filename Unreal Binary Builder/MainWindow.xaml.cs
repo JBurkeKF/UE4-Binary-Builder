@@ -305,29 +305,19 @@ namespace Unreal_Binary_Builder
                         GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
                     }
 
+					string srcXboxCommonPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Saved\CsTools\Engine\Binaries\DotNET\AutomationScripts\XboxCommon" ).Replace(Path.GetFileName(AutomationExePath), "");
+					string dstXboxCommonPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Binaries\DotNET\AutomationScripts\XboxCommon");
+
+					AddLogEntry(string.Format("Copying Xbox One common automation scripts from [{0}] to [{1}]", srcXboxCommonPath, dstXboxCommonPath));
+
+					CopyDirectory(srcXboxCommonPath, dstXboxCommonPath, bWithFullDebugInfo.IsChecked != true);
+
 					string srcImagesPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Build\XboxOne\DefaultImages").Replace(Path.GetFileName(AutomationExePath), "");
 					string dstImagesPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\XboxOne\DefaultImages");
 
 					AddLogEntry(string.Format("Copying Xbox One default images from [{0}] to [{1}]", srcImagesPath, dstImagesPath));
 
-					if (!Directory.Exists(dstImagesPath))
-					{
-						Directory.CreateDirectory(dstImagesPath);
-					}
-
-					foreach (string filePath in Directory.GetFiles(srcImagesPath, "*", SearchOption.TopDirectoryOnly))
-					{
-						string file = filePath.Substring(srcImagesPath.Length);
-
-						if (file.StartsWith("\\") || file.StartsWith("/"))
-						{
-							file = file.Substring(1);
-						}
-
-						string newFilePath = Path.Combine(dstImagesPath, file);
-
-						File.Copy(filePath, newFilePath, true);
-					}
+					CopyDirectory(srcImagesPath, dstImagesPath);
 				}
 
 				if (postBuildSettings.CanSaveToZip())
@@ -776,6 +766,33 @@ namespace Unreal_Binary_Builder
 		private void CancelZipping_Click(object sender, RoutedEventArgs e)
 		{
             postBuildSettings.CancelTask(this);
+		}
+
+		private void CopyDirectory(string srcDir, string dstDir, bool ignorePDB = false)
+		{
+			if (!Directory.Exists(dstDir))
+			{
+				Directory.CreateDirectory(dstDir);
+			}
+
+			foreach (string filePath in Directory.GetFiles(srcDir, "*", SearchOption.TopDirectoryOnly))
+			{
+				if (ignorePDB && filePath.ToLowerInvariant().EndsWith(".pdb"))
+				{
+					continue;
+				}
+
+				string file = filePath.Substring(srcDir.Length);
+
+				if (file.StartsWith("\\") || file.StartsWith("/"))
+				{
+					file = file.Substring(1);
+				}
+
+				string newFilePath = Path.Combine(dstDir, file);
+
+				File.Copy(filePath, newFilePath, true);
+			}
 		}
 	}
 }
