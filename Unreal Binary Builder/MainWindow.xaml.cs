@@ -297,6 +297,39 @@ namespace Unreal_Binary_Builder
 		{
 			if (bBuildSucess)
 			{
+				if (bWithXboxOne.IsChecked == true)
+				{
+					if (FinalBuildPath == null)
+                    {
+                        FinalBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
+                        GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
+                    }
+
+					string srcImagesPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Build\XboxOne\DefaultImages").Replace(Path.GetFileName(AutomationExePath), "");
+					string dstImagesPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\XboxOne\DefaultImages");
+
+					AddLogEntry(string.Format("Copying Xbox One default images from [{0}] to [{1}]", srcImagesPath, dstImagesPath));
+
+					if (!Directory.Exists(dstImagesPath))
+					{
+						Directory.CreateDirectory(dstImagesPath);
+					}
+
+					foreach (string filePath in Directory.GetFiles(srcImagesPath, "*", SearchOption.TopDirectoryOnly))
+					{
+						string file = filePath.Substring(srcImagesPath.Length);
+
+						if (file.StartsWith("\\") || file.StartsWith("/"))
+						{
+							file = file.Substring(1);
+						}
+
+						string newFilePath = Path.Combine(dstImagesPath, file);
+
+						File.Copy(filePath, newFilePath, true);
+					}
+				}
+
 				if (postBuildSettings.CanSaveToZip())
 				{
                     if (FinalBuildPath == null)
