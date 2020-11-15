@@ -337,6 +337,11 @@ namespace Unreal_Binary_Builder
 				string dstPS4ContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\PS4\Content");
 
 				CopyDirectory(srcPS4ContentPath, dstPS4ContentPath);
+
+				string srcPS4BuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Build\PS4").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstPS4BuildPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\PS4");
+
+				CopyDirectory(srcPS4BuildPath, dstPS4BuildPath);
 			}
 		}
 
@@ -354,6 +359,11 @@ namespace Unreal_Binary_Builder
 				string dstPS5ContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\PS5\Content");
 
 				CopyDirectory(srcPS5ContentPath, dstPS5ContentPath);
+
+				string srcPS5BuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Build\PS5").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstPS5BuildPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\PS5");
+
+				CopyDirectory(srcPS5BuildPath, dstPS5BuildPath);
 			}
 		}
 
@@ -371,6 +381,11 @@ namespace Unreal_Binary_Builder
 				string dstSwitchContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\Switch\Content");
 
 				CopyDirectory(srcSwitchContentPath, dstSwitchContentPath);
+
+				string srcSwitchBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Build\Switch").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstSwitchBuildPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\Switch");
+
+				CopyDirectory(srcSwitchBuildPath, dstSwitchBuildPath);
 			}
 		}
 
@@ -400,6 +415,11 @@ namespace Unreal_Binary_Builder
 				string dstImagesPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\XboxOne\DefaultImages");
 
 				CopyDirectory(srcImagesPath, dstImagesPath);
+
+				string srcXboxOneBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Build\XboxOne").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstXboxOneBuildPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\XboxOne");
+
+				CopyDirectory(srcXboxOneBuildPath, dstXboxOneBuildPath);
 			}
 		}
 
