@@ -297,6 +297,17 @@ namespace Unreal_Binary_Builder
 		{
 			if (bBuildSucess)
 			{
+				if (FinalBuildPath == null)
+				{
+					FinalBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
+					GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
+				}
+
+				string srcCSVToolsPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Binaries\DotNET\CsvTools").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstCSVToolsPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Binaries\DotNET\CsvTools");
+
+				CopyDirectory(srcCSVToolsPath, dstCSVToolsPath);
+
 				OnBuildFinishedPS4();
 				OnBuildFinishedPS5();
 				OnBuildFinishedSwitch();
@@ -305,11 +316,6 @@ namespace Unreal_Binary_Builder
 
 				if (postBuildSettings.CanSaveToZip())
 				{
-                    if (FinalBuildPath == null)
-                    {
-                        FinalBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
-                        GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
-                    }
                     AddLogEntry(string.Format("Creating ZIP file. Target Engine Directory is {0}", FinalBuildPath));
                     postBuildSettings.PrepareToSave();
 					postBuildSettings.SaveToZip(this, FinalBuildPath, postBuildSettings.ZipPath.Text);
@@ -327,13 +333,7 @@ namespace Unreal_Binary_Builder
 		{
 			if (bWithPS4.IsChecked == true)
 			{
-				if (FinalBuildPath == null)
-                {
-                    FinalBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
-                    GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
-                }
-
-				string srcPS4ContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\PS4\Content" ).Replace(Path.GetFileName(AutomationExePath), "");
+				string srcPS4ContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\PS4\Content").Replace(Path.GetFileName(AutomationExePath), "");
 				string dstPS4ContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\PS4\Content");
 
 				CopyDirectory(srcPS4ContentPath, dstPS4ContentPath);
@@ -349,13 +349,7 @@ namespace Unreal_Binary_Builder
 		{
 			if (bWithPS5.IsChecked == true)
 			{
-				if (FinalBuildPath == null)
-                {
-                    FinalBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
-                    GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
-                }
-
-				string srcPS5ContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\PS5\Content" ).Replace(Path.GetFileName(AutomationExePath), "");
+				string srcPS5ContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\PS5\Content").Replace(Path.GetFileName(AutomationExePath), "");
 				string dstPS5ContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\PS5\Content");
 
 				CopyDirectory(srcPS5ContentPath, dstPS5ContentPath);
@@ -371,13 +365,7 @@ namespace Unreal_Binary_Builder
 		{
 			if (bWithSwitch.IsChecked == true)
 			{
-				if (FinalBuildPath == null)
-                {
-                    FinalBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
-                    GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
-                }
-
-				string srcSwitchContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\Switch\Content" ).Replace(Path.GetFileName(AutomationExePath), "");
+				string srcSwitchContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\Switch\Content").Replace(Path.GetFileName(AutomationExePath), "");
 				string dstSwitchContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\Switch\Content");
 
 				CopyDirectory(srcSwitchContentPath, dstSwitchContentPath);
@@ -393,18 +381,17 @@ namespace Unreal_Binary_Builder
 		{
 			if (bWithXboxOne.IsChecked == true)
 			{
-				if (FinalBuildPath == null)
-                {
-                    FinalBuildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
-                    GameAnalyticsCSharp.LogEvent("Final Build Path was null. Fixed.", GameAnalyticsSDK.Net.EGAErrorSeverity.Info);
-                }
+				string srcXboxOneDotNETPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Binaries\DotNET\XboxOne").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstXboxOneDotNETPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Binaries\DotNET\XboxOne");
 
-				string srcXboxCommonPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Saved\CsTools\Engine\Binaries\DotNET\AutomationScripts\XboxCommon" ).Replace(Path.GetFileName(AutomationExePath), "");
+				CopyDirectory(srcXboxOneDotNETPath, dstXboxOneDotNETPath);
+
+				string srcXboxCommonPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Saved\CsTools\Engine\Binaries\DotNET\AutomationScripts\XboxCommon").Replace(Path.GetFileName(AutomationExePath), "");
 				string dstXboxCommonPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Binaries\DotNET\AutomationScripts\XboxCommon");
 
 				System.Collections.Generic.List<string> ignoreExtensions = new System.Collections.Generic.List<string>();
 
-				if ( bWithFullDebugInfo.IsChecked != true )
+				if (bWithFullDebugInfo.IsChecked != true)
 				{
 					ignoreExtensions.Add("pdb");
 				}
@@ -427,6 +414,20 @@ namespace Unreal_Binary_Builder
 		{
 			if (bWithXSX.IsChecked == true)
 			{
+				string srcWinGDKContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\WinGDK\Content").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstWinGDKContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\WinGDK\Content");
+
+				CopyDirectory(srcWinGDKContentPath, dstWinGDKContentPath);
+
+				string srcXboxOneGDKContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\XboxOneGDK\Content").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstXboxOneGDKContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\XboxOneGDK\Content");
+
+				CopyDirectory(srcXboxOneGDKContentPath, dstXboxOneGDKContentPath);
+
+				string srcXSXContentPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\XSX\Content").Replace(Path.GetFileName(AutomationExePath), "");
+				string dstXSXContentPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\XSX\Content");
+
+				CopyDirectory(srcXSXContentPath, dstXSXContentPath);
 			}
 		}
 
@@ -571,12 +572,30 @@ namespace Unreal_Binary_Builder
                 
                 if (SupportConsoles())
                 {
-					// TODO: XSX support
-                    CommandLineArgs += string.Format(" -set:WithSwitch={0} -set:WithPS4={1} -set:WithXboxOne={2} -set:WithPS5={3}",
-                    GetConditionalString(bWithSwitch.IsChecked),
-                    GetConditionalString(bWithPS4.IsChecked),
-                    GetConditionalString(bWithXboxOne.IsChecked),
-					GetConditionalString(bWithPS5.IsChecked));
+					if (bWithSwitch.IsChecked == true)
+					{
+						CommandLineArgs += string.Format(" -set:WithSwitch={0}", GetConditionalString(true));
+					}
+
+					if (bWithPS4.IsChecked == true)
+					{
+						CommandLineArgs += string.Format(" -set:WithPS4={0}", GetConditionalString(true));
+					}
+
+					if (bWithPS5.IsChecked == true)
+					{
+						CommandLineArgs += string.Format(" -set:WithPS5={0}", GetConditionalString(true));
+					}
+
+					if (bWithXboxOne.IsChecked == true)
+					{
+						CommandLineArgs += string.Format(" -set:WithXboxOne={0}", GetConditionalString(true));
+					}
+
+					if (bWithXSX.IsChecked == true)
+					{
+						CommandLineArgs += string.Format(" -set:WithGDK={0}", GetConditionalString(true));
+					}
                 }
 
                 if (SupportLinuxAArch64())
@@ -923,7 +942,14 @@ namespace Unreal_Binary_Builder
 
 				string newFilePath = Path.Combine(dstDir, file);
 
-				File.Copy(filePath, newFilePath, true);
+				try
+				{
+					File.Copy(filePath, newFilePath, true);
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", filePath, e));
+				}
 			}
 		}
 	}
