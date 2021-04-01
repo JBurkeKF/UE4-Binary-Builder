@@ -358,6 +358,15 @@ namespace Unreal_Binary_Builder
 				string dstPS5BuildPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Build\PS5");
 
 				CopyDirectory(srcPS5BuildPath, dstPS5BuildPath);
+
+				string srcPS5TMAPIPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\Engine\Platforms\PS5\Source\ThirdParty\PS5TMAPI\Public").Replace(Path.GetFileName(AutomationExePath), "");
+
+				if (Directory.Exists(srcPS5TMAPIPath))
+				{
+					string dstPS5TMAPIPath = Path.Combine(FinalBuildPath, @"Windows\Engine\Platforms\PS5\Source\ThirdParty\PS5TMAPI\Public");
+
+					CopyDirectory(srcPS5TMAPIPath, dstPS5TMAPIPath);
+				}
 			}
 		}
 
