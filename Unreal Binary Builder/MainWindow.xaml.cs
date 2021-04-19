@@ -308,6 +308,8 @@ namespace Unreal_Binary_Builder
 
 				CopyDirectory(srcCSVToolsPath, dstCSVToolsPath);
 
+				AddInstallScript();
+
 				OnBuildFinishedPS4();
 				OnBuildFinishedPS5();
 				OnBuildFinishedSwitch();
@@ -327,6 +329,76 @@ namespace Unreal_Binary_Builder
 
 			WriteToLogFile();
 			TryShutdown();
+		}
+
+		private void AddInstallScript()
+		{
+			string srcInstallScriptPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\InstallEditor.ps1").Replace(Path.GetFileName(AutomationExePath), "");
+			string srcBuiltEngineIDPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\BuiltEngineID.txt").Replace(Path.GetFileName(AutomationExePath), "");
+
+			if (srcInstallScriptPath.EndsWith("\\") || srcInstallScriptPath.EndsWith("/"))
+			{
+				srcInstallScriptPath = srcInstallScriptPath.Substring(0, srcInstallScriptPath.Length - 1);
+			}
+
+			if (srcBuiltEngineIDPath.EndsWith("\\") || srcBuiltEngineIDPath.EndsWith("/"))
+			{
+				srcBuiltEngineIDPath = srcBuiltEngineIDPath.Substring(0, srcBuiltEngineIDPath.Length - 1);
+			}
+
+			if (File.Exists(srcInstallScriptPath))
+			{
+				string dstInstallScriptPath = Path.Combine(FinalBuildPath, @"Windows\InstallEditor.ps1");
+				string dstEngineIDPath = Path.Combine(FinalBuildPath, @"Windows\EngineID.txt");
+
+				if (dstInstallScriptPath.EndsWith("\\") || dstInstallScriptPath.EndsWith("/"))
+				{
+					dstInstallScriptPath = dstInstallScriptPath.Substring(0, dstInstallScriptPath.Length - 1);
+				}
+
+				if (dstEngineIDPath.EndsWith("\\") || dstEngineIDPath.EndsWith("/"))
+				{
+					dstEngineIDPath = dstEngineIDPath.Substring(0, dstEngineIDPath.Length - 1);
+				}
+
+				try
+				{
+					File.Copy(srcInstallScriptPath, dstInstallScriptPath, true);
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcInstallScriptPath, e));
+				}
+
+				if (File.Exists(srcBuiltEngineIDPath))
+				{
+					try
+					{
+						File.Copy(srcBuiltEngineIDPath, dstEngineIDPath, true);
+					}
+					catch (Exception e)
+					{
+						AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcBuiltEngineIDPath, e));
+					}
+				}
+				else
+				{
+					Guid engineID = Guid.NewGuid();
+
+					try
+					{
+						File.WriteAllText(dstEngineIDPath, string.Format(System.Globalization.CultureInfo.InvariantCulture, "{{{0}}}", engineID).ToUpperInvariant());
+					}
+					catch (Exception e)
+					{
+						AddLogEntry(string.Format("Failed to create engine ID file [{0}], {1}", dstEngineIDPath, e));
+					}
+				}
+			}
+			else
+			{
+				AddLogEntry("Install script does not exist at path [" + srcInstallScriptPath + "]");
+			}
 		}
 
 		private void OnBuildFinishedPS4()
