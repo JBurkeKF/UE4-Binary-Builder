@@ -1,12 +1,15 @@
-Unreal Engine 4 Binary Builder
+Unreal Engine Binary Builder
 ======================
 
 <a href="https://www.buymeacoffee.com/ryanjon2040" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-This is a small app designed to create binary build of [Unreal Engine 4](https://www.unrealengine.com/) from [GitHub source](https://github.com/EpicGames/UnrealEngine).
+This is a small app designed to create binary build of [Unreal Engine](https://www.unrealengine.com/) from [GitHub source](https://github.com/EpicGames/UnrealEngine).
 
-![https://twitter.com/ryanjon2040](https://img.shields.io/twitter/follow/ryanjon2040.svg?style=popout)
+[![Discord](https://img.shields.io/discord/591914197219016707.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/zBMrKRdwgw)
 
+[<img src="https://img.shields.io/twitter/follow/ryanjon2040.svg?style=popout">](https://twitter.com/ryanjon2040)
+
+![](https://github.com/ryanjon2040/UE4-Binary-Builder/actions/workflows/build-ubb.yml/badge.svg)
 ![](https://img.shields.io/github/last-commit/ryanjon2040/UE4-Binary-Builder.svg?style=popout) 
 ![](https://img.shields.io/github/license/ryanjon2040/UE4-Binary-Builder.svg?style=popout) ![](https://img.shields.io/github/downloads/ryanjon2040/UE4-Binary-Builder/total.svg?style=popout) 
 

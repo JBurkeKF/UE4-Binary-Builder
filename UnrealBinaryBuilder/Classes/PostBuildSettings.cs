@@ -26,7 +26,7 @@ namespace UnrealBinaryBuilder.Classes
 
 		public bool CanSaveToZip()
 		{
-			return ShouldSaveToZip() && DirectoryIsWritable(mainWindow.ZipPath.Text);
+			return ShouldSaveToZip() && DirectoryIsWritable(Path.GetDirectoryName(mainWindow.ZipPath.Text));
 		}
 
 		public bool ShouldSaveToZip()
@@ -36,8 +36,13 @@ namespace UnrealBinaryBuilder.Classes
 
 		public bool DirectoryIsWritable(string DirectoryPath)
 		{
-			DirectoryInfo ZipDirectory = new FileInfo(DirectoryPath).Directory;
-			bool bDirectoryExists = (ZipDirectory != null) && ZipDirectory.Exists;
+			if (string.IsNullOrWhiteSpace(DirectoryPath))
+			{
+				return false;
+			}
+
+			DirectoryInfo ZipDirectory = new DirectoryInfo(DirectoryPath);
+			bool bDirectoryExists = ZipDirectory.Exists;
 			bool bHasWriteAccess = false;
 			if (bDirectoryExists)
 			{
@@ -158,7 +163,7 @@ namespace UnrealBinaryBuilder.Classes
 			{
 				using (var zipFile = new ZipFile { CompressionLevel = CL })
 				{
-					Application.Current.Dispatcher.Invoke(() => { mainWindow.FileSaveState.Content = "State: Finding files..."; });
+					Application.Current.Dispatcher.Invoke(() => { mainWindow.FileSaveState.Content = $"State: Be Patient! This might take a long time. Ninjas are finding files in {InBuildDirectory}"; });
 					IEnumerable<string> files = Directory.EnumerateFiles(InBuildDirectory, "*.*", SearchOption.AllDirectories);
 
 					ZipCancelToken.ThrowIfCancellationRequested();
@@ -335,7 +340,13 @@ namespace UnrealBinaryBuilder.Classes
 
 					zipFile.UseZip64WhenSaving = Zip64Option.Always;
 					zipFile.Save(ZipLocationToSave);
-					Application.Current.Dispatcher.Invoke(() => { mainWindow.AddLogEntry($"Done zipping. File location: {ZipLocationToSave}"); });
+					Application.Current.Dispatcher.Invoke(() => 
+					{
+						mainWindow.CancelZipping.IsEnabled = false;
+						mainWindow.CurrentFileSaving.Visibility = Visibility.Collapsed;
+						mainWindow.FileSaveState.Content = $"State: Saved to {ZipLocationToSave}";
+						mainWindow.AddLogEntry($"Done zipping. {ZipLocationToSave}");
+					});
 				}
 			}, ZipCancelToken);
 
@@ -370,7 +381,7 @@ namespace UnrealBinaryBuilder.Classes
 			ZipCancelTokenSource.Cancel();
 		}
 
-		static string BytesToString(long byteCount)
+		public static string BytesToString(long byteCount)
 		{
 			string[] suf = { "B", "KB", "MB", "GB", "TB" };
 			if (byteCount == 0)

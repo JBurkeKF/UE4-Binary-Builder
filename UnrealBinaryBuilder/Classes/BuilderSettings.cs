@@ -20,9 +20,7 @@ namespace UnrealBinaryBuilder.Classes
 		public bool bShowHTML5DeprecatedMessage { get; set; }
 		public bool bShowConsoleDeprecatedMessage { get; set; }
 
-		public int EngineVersionIndex { get; set; }
 		public string SetupBatFile { get; set; }
-		public string AutomationToolPath { get; set; }
 		public string CustomBuildFile { get; set; }
 		public string GameConfigurations { get; set; }
 		public string CustomOptions { get; set; }
@@ -68,6 +66,9 @@ namespace UnrealBinaryBuilder.Classes
 		public bool bShutdownPC { get; set; }
 		public bool bShutdownIfBuildSuccess { get; set; }
 		public bool bContinueToEngineBuild { get; set; }
+		public bool bBuildSetupBatFile { get; set; }
+		public bool bGenerateProjectFiles { get; set; }
+		public bool bBuildAutomationTool { get; set; }
 
 		public bool bZipEngineBuild { get; set; }		
 		public bool bZipEnginePDB { get; set; }
@@ -97,16 +98,18 @@ namespace UnrealBinaryBuilder.Classes
 	public static class BuilderSettings
 	{
 		private static readonly string PROGRAM_SAVED_PATH_BASE = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-		private static readonly string PROGRAM_SAVED_PATH = Path.Combine(PROGRAM_SAVED_PATH_BASE, "UnrealBinaryBuilder");
+		public static readonly string PROGRAM_SAVED_PATH = Path.Combine(PROGRAM_SAVED_PATH_BASE, "UnrealBinaryBuilder");
 
 		private static readonly string PROGRAM_SETTINGS_PATH_BASE = Path.Combine(PROGRAM_SAVED_PATH, "Saved");
 		private static readonly string PROGRAM_SETTINGS_FILE_NAME = "Settings.json";
 
 		private static readonly string PROGRAM_LOG_PATH_BASE = Path.Combine(PROGRAM_SAVED_PATH, "Logs");
 		private static readonly string PROGRAM_LOG_FILE_NAME = "UnrealBinaryBuilder.log";
+		private static readonly string PROGRAM_ERRORLOG_FILE_NAME = "BuildErrors.log";
 
 		private static readonly string PROGRAM_SETTINGS_PATH = Path.Combine(PROGRAM_SETTINGS_PATH_BASE, PROGRAM_SETTINGS_FILE_NAME);
 		private static readonly string PROGRAM_LOG_PATH = Path.Combine(PROGRAM_LOG_PATH_BASE, PROGRAM_LOG_FILE_NAME);
+		private static readonly string PROGRAM_ERRORLOG_PATH = Path.Combine(PROGRAM_LOG_PATH_BASE, PROGRAM_ERRORLOG_FILE_NAME);
 
 		private static readonly string DEFAULT_GIT_CUSTOM_CACHE_PATH = Path.Combine(PROGRAM_SAVED_PATH, "GitCache");
 
@@ -120,9 +123,7 @@ namespace UnrealBinaryBuilder.Classes
 			BSJ.bShowHTML5DeprecatedMessage = true;
 			BSJ.bShowConsoleDeprecatedMessage = true;
 
-			BSJ.EngineVersionIndex = 0;
 			BSJ.SetupBatFile = null;
-			BSJ.AutomationToolPath = null;
 			BSJ.CustomBuildFile = null;
 			BSJ.GameConfigurations = "Development;Shipping";
 			BSJ.CustomOptions = null;
@@ -177,6 +178,9 @@ namespace UnrealBinaryBuilder.Classes
 			BSJ.bShutdownPC = false;
 			BSJ.bShutdownIfBuildSuccess = false;
 			BSJ.bContinueToEngineBuild = true;
+			BSJ.bBuildSetupBatFile = true;
+			BSJ.bGenerateProjectFiles = true;
+			BSJ.bBuildAutomationTool = true;
 
 			BSJ.bZipEngineBuild = false;
 			BSJ.bZipEngineDebug = false;
@@ -259,9 +263,7 @@ namespace UnrealBinaryBuilder.Classes
 			BuilderSettingsJson BSJ = new BuilderSettingsJson();
 			BSJ.Theme = mainWindow.CurrentTheme;
 			BSJ.bCheckForUpdatesAtStartup = mainWindow.SettingsJSON.bCheckForUpdatesAtStartup;
-			BSJ.EngineVersionIndex = mainWindow.EngineVersionSelection.SelectedIndex;
 			BSJ.SetupBatFile = mainWindow.SetupBatFilePath.Text;
-			BSJ.AutomationToolPath = mainWindow.AutomationToolPath.Text;
 			BSJ.CustomBuildFile = mainWindow.CustomBuildXMLFile.Text;
 			BSJ.GameConfigurations = mainWindow.GameConfigurations.Text;
 			BSJ.CustomOptions = mainWindow.CustomOptions.Text;
@@ -306,6 +308,9 @@ namespace UnrealBinaryBuilder.Classes
 			BSJ.bShutdownPC = (bool)mainWindow.bShutdownWindows.IsChecked;
 			BSJ.bShutdownIfBuildSuccess = (bool)mainWindow.bShutdownIfSuccess.IsChecked;
 			BSJ.bContinueToEngineBuild = (bool)mainWindow.bContinueToEngineBuild.IsChecked;
+			BSJ.bBuildSetupBatFile = (bool)mainWindow.bBuildSetupBatFile.IsChecked;
+			BSJ.bGenerateProjectFiles = (bool)mainWindow.bGenerateProjectFiles.IsChecked;
+			BSJ.bBuildAutomationTool = (bool)mainWindow.bBuildAutomationTool.IsChecked; ;
 
 			BSJ.bZipEngineBuild = (bool)mainWindow.bZipBuild.IsChecked;
 			BSJ.bZipEngineDebug = (bool)mainWindow.bIncludeDEBUG.IsChecked;
@@ -351,6 +356,24 @@ namespace UnrealBinaryBuilder.Classes
 				mainWindow.OpenLogFolderBtn.IsEnabled = true;
 			}
 			File.WriteAllText(PROGRAM_LOG_PATH, InContent);
+		}
+
+		public static void WriteErrorsToLogFile(string InContent)
+		{
+			try
+			{
+				File.Delete(PROGRAM_ERRORLOG_PATH);
+			}
+			catch (Exception) {}
+
+			if (string.IsNullOrWhiteSpace(InContent) == false)
+			{
+				if (Directory.Exists(PROGRAM_LOG_PATH_BASE) == false)
+				{
+					Directory.CreateDirectory(PROGRAM_LOG_PATH_BASE);
+				}
+				File.WriteAllText(PROGRAM_ERRORLOG_PATH, InContent);
+			}
 		}
 
 		public static void UpdatePlatformInclusion(string InPlatform, bool bIncluded)
@@ -416,7 +439,7 @@ namespace UnrealBinaryBuilder.Classes
 			}
 		}
 
-		private static IEnumerable<T> GetChildrenOfType<T>(DependencyObject dependencyObject) where T : DependencyObject
+		public static IEnumerable<T> GetChildrenOfType<T>(DependencyObject dependencyObject) where T : DependencyObject
 		{
 			if (dependencyObject != null)
 			{
