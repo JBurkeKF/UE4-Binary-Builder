@@ -181,7 +181,9 @@
 											<CheckBox x:Name="bWithTVOS" Content="TVOS" Margin="10" IsChecked="{Binding bWithTVOS}" />
 											<CheckBox x:Name="bWithSwitch" Content="Switch" Margin="10" IsChecked="{Binding bWithSwitch}" IsEnabled="{Binding SupportConsoles, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
 											<CheckBox x:Name="bWithPS4" Content="PS4" Margin="10" IsChecked="{Binding bWithPS4}" IsEnabled="{Binding SupportConsoles, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
+                                            <CheckBox x:Name="bWithPS5" Content="PS5" Margin="10" IsChecked="{Binding bWithPS5}" IsEnabled="{Binding SupportConsoles, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
 											<CheckBox x:Name="bWithXboxOne" Content="XBox One" Margin="10" IsChecked="{Binding bWithXboxOne}" IsEnabled="{Binding SupportConsoles, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
+                                            <CheckBox x:Name="bWithGDK" Content="Game Core" Margin="10" IsChecked="{Binding bWithGDK}" IsEnabled="{Binding SupportConsoles, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
 											<CheckBox x:Name="bWithLumin" Content="Lumin" Margin="10" IsChecked="{Binding bWithLumin}" />
 											<CheckBox x:Name="bWithHololens" Content="Holo Lens" Margin="10" IsChecked="{Binding bWithHoloLens}" IsEnabled="{Binding SupportServerClientTargets, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
 										</WrapPanel>

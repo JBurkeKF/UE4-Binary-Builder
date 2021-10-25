@@ -1006,10 +1006,12 @@ namespace UnrealBinaryBuilder
 
 				if (SupportConsoles)
 				{
-					CommandLineArgs += string.Format(" -set:WithSwitch={0} -set:WithPS4={1} -set:WithXboxOne={2}",
+					CommandLineArgs += string.Format(" -set:WithSwitch={0} -set:WithPS4={1} -set:WithPS5={2} -set:WithXboxOne={3} -set:WithGDK={4} ",
 					GetConditionalString(bWithSwitch.IsChecked),
 					GetConditionalString(bWithPS4.IsChecked),
-					GetConditionalString(bWithXboxOne.IsChecked));
+					GetConditionalString(bWithPS5.IsChecked),
+					GetConditionalString(bWithXboxOne.IsChecked),
+					GetConditionalString(bWithGDK.IsChecked));
 				}
 
 				if (SupportLinuxArm64)
@@ -1165,10 +1167,10 @@ namespace UnrealBinaryBuilder
 				}
 			}
 
-			if (SupportConsoles == false && (bWithSwitch.IsChecked == true || bWithPS4.IsChecked == true || bWithXboxOne.IsChecked == true))
+			if (SupportConsoles == false && (bWithSwitch.IsChecked == true || bWithPS4.IsChecked == true || bWithPS5.IsChecked == true || bWithXboxOne.IsChecked == true || bWithGDK.IsChecked == true))
 			{
 				GameAnalyticsCSharp.AddDesignEvent($"Build:Console:IncorrectEngine:{GetEngineName()}");
-				bWithSwitch.IsChecked = bWithPS4.IsChecked = bWithXboxOne.IsChecked = false;
+				bWithSwitch.IsChecked = bWithPS4.IsChecked = bWithPS5.IsChecked = bWithXboxOne.IsChecked = bWithGDK.IsChecked = false;
 				if (SettingsJSON.bShowConsoleDeprecatedMessage)
 				{
 					HandyControl.Controls.MessageBox.Show("Console support was removed from Unreal Engine 4.25 and higher. You had it enabled but since it is of no use, it is disabled.");
@@ -1246,7 +1248,7 @@ namespace UnrealBinaryBuilder
 
 		public bool SupportLinuxArm64 => IsUnrealEngine4() == false;
 
-		public bool SupportConsoles => GetEngineValue() <= 4.24;
+		public bool SupportConsoles => true;
 
 		public bool SupportVisualStudio2019 => IsUnrealEngine4() && IsEngineSelection425OrAbove;
 

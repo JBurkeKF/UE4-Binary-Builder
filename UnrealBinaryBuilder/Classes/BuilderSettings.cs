@@ -49,7 +49,9 @@ namespace UnrealBinaryBuilder.Classes
 		public bool bWithTVOS { get; set; }
 		public bool bWithSwitch { get; set; }
 		public bool bWithPS4 { get; set; }
+		public bool bWithPS5 { get; set; }
 		public bool bWithXboxOne { get; set; }
+		public bool bWithGDK { get; set; }
 		public bool bWithLumin { get; set; }
 		public bool bWithHoloLens { get; set; }
 
@@ -161,7 +163,9 @@ namespace UnrealBinaryBuilder.Classes
 			BSJ.bWithTVOS = false;
 			BSJ.bWithSwitch = false;
 			BSJ.bWithPS4 = false;
+			BSJ.bWithPS5 = false;
 			BSJ.bWithXboxOne = false;
+			BSJ.bWithGDK = false;
 			BSJ.bWithLumin = false;
 			BSJ.bWithHoloLens = false;
 
@@ -291,7 +295,9 @@ namespace UnrealBinaryBuilder.Classes
 			BSJ.bWithTVOS = (bool)mainWindow.bWithTVOS.IsChecked;
 			BSJ.bWithSwitch = (bool)mainWindow.bWithSwitch.IsChecked;
 			BSJ.bWithPS4 = (bool)mainWindow.bWithPS4.IsChecked;
+			BSJ.bWithPS5 = (bool)mainWindow.bWithPS5.IsChecked;
 			BSJ.bWithXboxOne = (bool)mainWindow.bWithXboxOne.IsChecked;
+			BSJ.bWithGDK = (bool)mainWindow.bWithGDK.IsChecked;
 			BSJ.bWithLumin = (bool)mainWindow.bWithLumin.IsChecked;
 			BSJ.bWithHoloLens = (bool)mainWindow.bWithHololens.IsChecked;
 
