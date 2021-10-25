@@ -1089,12 +1089,30 @@ namespace UnrealBinaryBuilder
 
 				if (SupportConsoles)
 				{
-					CommandLineArgs += string.Format(" -set:WithSwitch={0} -set:WithPS4={1} -set:WithPS5={2} -set:WithXboxOne={3} -set:WithGDK={4} ",
-					GetConditionalString(bWithSwitch.IsChecked),
-					GetConditionalString(bWithPS4.IsChecked),
-					GetConditionalString(bWithPS5.IsChecked),
-					GetConditionalString(bWithXboxOne.IsChecked),
-					GetConditionalString(bWithGDK.IsChecked));
+					if (bWithSwitch.IsChecked == true)
+					{
+						CommandLineArgs += " -set:WithSwitch=true";
+					}
+
+					if (bWithPS4.IsChecked == true)
+					{
+						CommandLineArgs += " -set:WithPS4=true";
+					}
+
+					if (bWithPS5.IsChecked == true)
+					{
+						CommandLineArgs += " -set:WithPS5=true";
+					}
+
+					if (bWithXboxOne.IsChecked == true)
+					{
+						CommandLineArgs += " -set:WithXboxOne=true";
+					}
+
+					if (bWithGDK.IsChecked == true)
+					{
+						CommandLineArgs += " -set:WithGDK=true";
+					}
 				}
 
 				if (SupportLinuxArm64)
