@@ -610,8 +610,17 @@ namespace UnrealBinaryBuilder
 			{
 				StartSetupBatFile.IsEnabled = true;
 				StartPluginBuildsBtn.IsEnabled = true;
+				OnHandleEnginePostBuild(bLastBuildSuccess);
 				OnBuildFinished(bLastBuildSuccess);
 			});
+		}
+
+		private void OnHandleEnginePostBuild(bool bBuildSuccess)
+		{
+			if (bBuildSuccess && currentProcessType == CurrentProcessType.BuildUnrealEngine)
+			{
+				AddInstallScript();
+			}
 		}
 
 		private void OnBuildFinished(bool bBuildSucess)
@@ -693,6 +702,80 @@ namespace UnrealBinaryBuilder
 			WriteToLogFile();
 			TryShutdown();
 			LogMessageErrors = null;
+		}
+
+		private void AddInstallScript()
+		{
+			string buildPath;
+			string srcInstallScriptPath;
+			string srcBuiltEngineIDPath;
+
+			if (UnrealBinaryBuilderHelpers.IsUnrealEngine5)
+			{
+				buildPath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
+				srcInstallScriptPath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\InstallEditor.ps1").Replace(Path.GetFileName(AutomationExePath), "");
+				srcBuiltEngineIDPath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\BuiltEngineID.txt").Replace(Path.GetFileName(AutomationExePath), "");
+			}
+			else
+			{
+				buildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
+				srcInstallScriptPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\InstallEditor.ps1").Replace(Path.GetFileName(AutomationExePath), "");
+				srcBuiltEngineIDPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\BuiltEngineID.txt").Replace(Path.GetFileName(AutomationExePath), "");
+			}
+
+			if (srcInstallScriptPath.EndsWith("\\") || srcInstallScriptPath.EndsWith("/"))
+			{
+				srcInstallScriptPath = srcInstallScriptPath.Substring(0, srcInstallScriptPath.Length - 1);
+			}
+
+			if (srcBuiltEngineIDPath.EndsWith("\\") || srcBuiltEngineIDPath.EndsWith("/"))
+			{
+				srcBuiltEngineIDPath = srcBuiltEngineIDPath.Substring(0, srcBuiltEngineIDPath.Length - 1);
+			}
+
+			if (File.Exists(srcInstallScriptPath))
+			{
+				string dstInstallScriptPath = Path.Combine(buildPath, @"Windows\InstallEditor.ps1");
+				string dstEngineIDPath = Path.Combine(buildPath, @"Windows\EngineID.txt");
+
+				try
+				{
+					File.Copy(srcInstallScriptPath, dstInstallScriptPath, true);
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcInstallScriptPath, e));
+				}
+
+				if (File.Exists(srcBuiltEngineIDPath))
+				{
+					try
+					{
+						File.Copy(srcBuiltEngineIDPath, dstEngineIDPath, true);
+					}
+					catch (Exception e)
+					{
+						AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcBuiltEngineIDPath, e));
+					}
+				}
+				else
+				{
+					Guid engineID = Guid.NewGuid();
+
+					try
+					{
+						File.WriteAllText(dstEngineIDPath, string.Format(System.Globalization.CultureInfo.InvariantCulture, "{{{0}}}", engineID).ToUpperInvariant());
+					}
+					catch (Exception e)
+					{
+						AddLogEntry(string.Format("Failed to create engine ID file [{0}], {1}", dstEngineIDPath, e));
+					}
+				}
+			}
+			else
+			{
+				AddLogEntry("Install script does not exist at path [" + srcInstallScriptPath + "]");
+			}
 		}
 
 		public void TryShutdown()
