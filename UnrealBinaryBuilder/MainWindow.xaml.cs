@@ -837,6 +837,11 @@ namespace UnrealBinaryBuilder
 
 		private string SetupBatCommandLineArgs()
 		{
+			if (SettingsJSON.SetupNoArugments)
+			{
+				return "";
+			}
+
 			string CommandLines = "--force";
 
 			if (SettingsJSON.GitDependencyAll == true)

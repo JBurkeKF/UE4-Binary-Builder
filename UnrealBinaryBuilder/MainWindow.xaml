@@ -84,7 +84,10 @@
 											<CheckBox x:Name="GitTVOSPlatform" Content="TV OS" Margin="5" HorizontalAlignment = "Left" Checked="GitPlatform_CheckedChanged" Unchecked="GitPlatform_CheckedChanged"/>
 										</StackPanel>
 									</GroupBox>
-									<GroupBox Header="Git Dependencies Options" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1068,10,0,0" Height="201" Width="200" Style="{StaticResource GroupBoxOriginal}">
+                                    <GroupBox Header="Setup Options" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Style="{StaticResource GroupBoxOriginal}">
+                                        <CheckBox x:Name="bSetupNoArguments" HorizontalAlignment="Left" Content="No Arguments for Setup.bat" IsChecked="{Binding SetupNoArugments}" Margin="5"/>
+                                    </GroupBox>
+                                    <GroupBox Header="Git Dependencies Options" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1068,10,0,0" Height="201" Width="200" Style="{StaticResource GroupBoxOriginal}">
 										<StackPanel>
 											<CheckBox x:Name="bGitSyncAll" HorizontalAlignment="Left" Content="Sync All" IsChecked="{Binding GitDependencyAll}" Margin="5" ToolTip ="Sync all folders"/>
 											<CheckBox HorizontalAlignment="Left" Content="Force" Margin="5" IsChecked="True" IsEnabled="False" ToolTip="--force parameter must be added to git."/>

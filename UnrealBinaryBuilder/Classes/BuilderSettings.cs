@@ -35,6 +35,7 @@ namespace UnrealBinaryBuilder.Classes
 		public string GitDependencyCache { get; set; }
 		public double GitDependencyCacheMultiplier { get; set; }
 		public int GitDependencyCacheDays { get; set; }
+		public bool SetupNoArugments { get; set; }
 
 		public bool bHostPlatformOnly { get; set; }
 		public bool bHostPlatformEditorOnly { get; set; }
@@ -149,6 +150,7 @@ namespace UnrealBinaryBuilder.Classes
 			BSJ.GitDependencyCacheMultiplier = 2.0;
 			BSJ.GitDependencyCacheDays = 7;
 			BSJ.GitDependencyEnableCache = true;
+			BSJ.SetupNoArugments = false;
 
 			BSJ.bHostPlatformOnly = false;
 			BSJ.bHostPlatformEditorOnly = false;
@@ -281,6 +283,7 @@ namespace UnrealBinaryBuilder.Classes
 			BSJ.GitDependencyCacheMultiplier = Convert.ToDouble(mainWindow.GitCacheMultiplier.Text);
 			BSJ.GitDependencyCacheDays = Convert.ToInt32(mainWindow.GitCacheDays.Text);
 			BSJ.GitDependencyEnableCache = (bool)mainWindow.bGitEnableCache.IsChecked;
+			BSJ.SetupNoArugments = (bool)mainWindow.bSetupNoArguments.IsChecked;
 
 			BSJ.bHostPlatformOnly = (bool)mainWindow.bHostPlatformOnly.IsChecked;
 			BSJ.bHostPlatformEditorOnly = (bool)mainWindow.bHostPlatformEditorOnly.IsChecked;
