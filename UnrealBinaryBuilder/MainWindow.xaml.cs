@@ -619,7 +619,85 @@ namespace UnrealBinaryBuilder
 		{
 			if (bBuildSuccess && currentProcessType == CurrentProcessType.BuildUnrealEngine)
 			{
-				AddInstallScript();
+				string sourcePath;
+				string buildPath;
+
+				if (UnrealBinaryBuilderHelpers.IsUnrealEngine5)
+				{
+					sourcePath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", "").Replace(Path.GetFileName(AutomationExePath), "");
+					buildPath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
+				}
+				else
+				{
+					sourcePath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", "").Replace(Path.GetFileName(AutomationExePath), "");
+					buildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
+				}
+
+				if (bWithPS4.IsChecked == true)
+				{
+					string srcPS4ContentPath = Path.Combine(sourcePath, @"Engine\Platforms\PS4\Content");
+					string dstPS4ContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\PS4\Content");
+
+					CopyDirectory(srcPS4ContentPath, dstPS4ContentPath);
+				}
+
+				if (bWithPS5.IsChecked == true)
+				{
+					string srcPS5ContentPath = Path.Combine(sourcePath, @"Engine\Platforms\PS5\Content");
+					string dstPS5ContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\PS5\Content");
+
+					CopyDirectory(srcPS5ContentPath, dstPS5ContentPath);
+
+					string srcPS5TMAPIPath = Path.Combine(sourcePath, @"Engine\Platforms\PS5\Source\ThirdParty\PS5TMAPI\Public");
+
+					if (Directory.Exists(srcPS5TMAPIPath))
+					{
+						string dstPS5TMAPIPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\PS5\Source\ThirdParty\PS5TMAPI\Public");
+
+						CopyDirectory(srcPS5TMAPIPath, dstPS5TMAPIPath);
+					}
+				}
+
+				if (bWithSwitch.IsChecked == true)
+				{
+					string srcSwitchContentPath = Path.Combine(sourcePath, @"Engine\Platforms\Switch\Content");
+					string dstSwitchContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\Switch\Content");
+
+					CopyDirectory(srcSwitchContentPath, dstSwitchContentPath);
+				}
+
+				if (bWithXboxOne.IsChecked == true)
+				{
+					string srcXboxOneDotNETPath = Path.Combine(sourcePath, @"Engine\Binaries\DotNET\XboxOne");
+					string dstXboxOneDotNETPath = Path.Combine(buildPath, @"Windows\Engine\Binaries\DotNET\XboxOne");
+
+					CopyDirectory(srcXboxOneDotNETPath, dstXboxOneDotNETPath);
+
+					string srcImagesPath = Path.Combine(sourcePath, @"Engine\Build\XboxOne\DefaultImages");
+					string dstImagesPath = Path.Combine(buildPath, @"Windows\Engine\Build\XboxOne\DefaultImages");
+
+					CopyDirectory(srcImagesPath, dstImagesPath);
+				}
+
+				if (bWithGDK.IsChecked == true)
+				{
+					string srcWinGDKContentPath = Path.Combine(sourcePath, @"Engine\Platforms\WinGDK\Content");
+					string dstWinGDKContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\WinGDK\Content");
+
+					CopyDirectory(srcWinGDKContentPath, dstWinGDKContentPath);
+
+					string srcXboxOneGDKContentPath = Path.Combine(sourcePath, @"Engine\Platforms\XboxOneGDK\Content");
+					string dstXboxOneGDKContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\XboxOneGDK\Content");
+
+					CopyDirectory(srcXboxOneGDKContentPath, dstXboxOneGDKContentPath);
+
+					string srcXSXContentPath = Path.Combine(sourcePath, @"Engine\Platforms\XSX\Content");
+					string dstXSXContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\XSX\Content");
+
+					CopyDirectory(srcXSXContentPath, dstXSXContentPath);
+				}
+
+				AddInstallScript(sourcePath, buildPath);
 			}
 		}
 
@@ -704,34 +782,10 @@ namespace UnrealBinaryBuilder
 			LogMessageErrors = null;
 		}
 
-		private void AddInstallScript()
+		private void AddInstallScript(string sourcePath, string buildPath)
 		{
-			string buildPath;
-			string srcInstallScriptPath;
-			string srcBuiltEngineIDPath;
-
-			if (UnrealBinaryBuilderHelpers.IsUnrealEngine5)
-			{
-				buildPath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
-				srcInstallScriptPath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\InstallEditor.ps1").Replace(Path.GetFileName(AutomationExePath), "");
-				srcBuiltEngineIDPath = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\BuiltEngineID.txt").Replace(Path.GetFileName(AutomationExePath), "");
-			}
-			else
-			{
-				buildPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\LocalBuilds\Engine").Replace(Path.GetFileName(AutomationExePath), "");
-				srcInstallScriptPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\InstallEditor.ps1").Replace(Path.GetFileName(AutomationExePath), "");
-				srcBuiltEngineIDPath = Path.GetFullPath(AutomationExePath).Replace(@"\Engine\Binaries\DotNET", @"\BuiltEngineID.txt").Replace(Path.GetFileName(AutomationExePath), "");
-			}
-
-			if (srcInstallScriptPath.EndsWith("\\") || srcInstallScriptPath.EndsWith("/"))
-			{
-				srcInstallScriptPath = srcInstallScriptPath.Substring(0, srcInstallScriptPath.Length - 1);
-			}
-
-			if (srcBuiltEngineIDPath.EndsWith("\\") || srcBuiltEngineIDPath.EndsWith("/"))
-			{
-				srcBuiltEngineIDPath = srcBuiltEngineIDPath.Substring(0, srcBuiltEngineIDPath.Length - 1);
-			}
+			string srcInstallScriptPath = Path.Combine(sourcePath, "InstallEditor.ps1");
+			string srcBuiltEngineIDPath = Path.Combine(sourcePath, "BuiltEngineID.txt");
 
 			if (File.Exists(srcInstallScriptPath))
 			{
@@ -1910,6 +1964,82 @@ namespace UnrealBinaryBuilder
 					{
 						bExp.UpdateTarget();
 					}
+				}
+			}
+		}
+
+		private void CopyDirectory(string srcDir, string dstDir, string searchOption = "*", string[] ignoreExtensions = null)
+		{
+			if (!Directory.Exists(srcDir))
+			{
+				AddLogEntry(string.Format("Failed to copy from [{0}], path does not exist", srcDir));
+
+				return;
+			}
+
+			AddLogEntry(string.Format("Copying from [{0}] to [{1}]", srcDir, dstDir));
+
+			if (!Directory.Exists(dstDir))
+			{
+				Directory.CreateDirectory(dstDir);
+			}
+
+			foreach (string dirPath in Directory.GetDirectories(srcDir, "*", SearchOption.AllDirectories))
+			{
+				string dir = dirPath.Substring(srcDir.Length);
+
+				if (dir.StartsWith("\\") || dir.StartsWith("/"))
+				{
+					dir = dir.Substring(1);
+				}
+
+				string newDirPath = Path.Combine(dstDir, dir);
+
+				if (!Directory.Exists(newDirPath))
+				{
+					Directory.CreateDirectory(newDirPath);
+				}
+			}
+
+			foreach (string filePath in Directory.GetFiles(srcDir, searchOption, SearchOption.AllDirectories))
+			{
+				if (ignoreExtensions != null)
+				{
+					bool ignoreFile = false;
+					string lowerFilePath = filePath.ToLowerInvariant();
+
+					foreach (string ext in ignoreExtensions)
+					{
+						if (lowerFilePath.EndsWith("." + ext))
+						{
+							ignoreFile = true;
+
+							break;
+						}
+					}
+
+					if (ignoreFile)
+					{
+						continue;
+					}
+				}
+
+				string file = filePath.Substring(srcDir.Length);
+
+				if (file.StartsWith("\\") || file.StartsWith("/"))
+				{
+					file = file.Substring(1);
+				}
+
+				string newFilePath = Path.Combine(dstDir, file);
+
+				try
+				{
+					File.Copy(filePath, newFilePath, true);
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", filePath, e));
 				}
 			}
 		}
