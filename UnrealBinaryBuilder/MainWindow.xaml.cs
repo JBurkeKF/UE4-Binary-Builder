@@ -786,11 +786,11 @@ namespace UnrealBinaryBuilder
 		{
 			string srcInstallScriptPath = Path.Combine(sourcePath, "InstallEditor.ps1");
 			string srcBuiltEngineIDPath = Path.Combine(sourcePath, "BuiltEngineID.txt");
+			string srcInstructionsPath = Path.Combine(sourcePath, "InstallInstructions.txt");
 
 			if (File.Exists(srcInstallScriptPath))
 			{
 				string dstInstallScriptPath = Path.Combine(buildPath, @"Windows\InstallEditor.ps1");
-				string dstEngineIDPath = Path.Combine(buildPath, @"Windows\EngineID.txt");
 
 				try
 				{
@@ -800,35 +800,51 @@ namespace UnrealBinaryBuilder
 				{
 					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcInstallScriptPath, e));
 				}
-
-				if (File.Exists(srcBuiltEngineIDPath))
-				{
-					try
-					{
-						File.Copy(srcBuiltEngineIDPath, dstEngineIDPath, true);
-					}
-					catch (Exception e)
-					{
-						AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcBuiltEngineIDPath, e));
-					}
-				}
-				else
-				{
-					Guid engineID = Guid.NewGuid();
-
-					try
-					{
-						File.WriteAllText(dstEngineIDPath, string.Format(System.Globalization.CultureInfo.InvariantCulture, "{{{0}}}", engineID).ToUpperInvariant());
-					}
-					catch (Exception e)
-					{
-						AddLogEntry(string.Format("Failed to create engine ID file [{0}], {1}", dstEngineIDPath, e));
-					}
-				}
 			}
 			else
 			{
 				AddLogEntry("Install script does not exist at path [" + srcInstallScriptPath + "]");
+			}
+
+			string dstEngineIDPath = Path.Combine(buildPath, @"Windows\EngineID.txt");
+
+			if (File.Exists(srcBuiltEngineIDPath))
+			{
+				try
+				{
+					File.Copy(srcBuiltEngineIDPath, dstEngineIDPath, true);
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcBuiltEngineIDPath, e));
+				}
+			}
+			else
+			{
+				Guid engineID = Guid.NewGuid();
+
+				try
+				{
+					File.WriteAllText(dstEngineIDPath, string.Format(System.Globalization.CultureInfo.InvariantCulture, "{{{0}}}", engineID).ToUpperInvariant());
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to create engine ID file [{0}], {1}", dstEngineIDPath, e));
+				}
+			}
+
+			if (File.Exists(srcInstructionsPath))
+			{
+				string dstInstructionsPath = Path.Combine(buildPath, @"Windows\InstallInstructions.txt");
+
+				try
+				{
+					File.Copy(srcInstructionsPath, dstInstructionsPath, true);
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcInstructionsPath, e));
+				}
 			}
 		}
 
