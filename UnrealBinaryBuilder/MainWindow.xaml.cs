@@ -691,6 +691,11 @@ namespace UnrealBinaryBuilder
 
 					CopyDirectory(srcXboxOneGDKContentPath, dstXboxOneGDKContentPath);
 
+					string srcXB1ContentPath = Path.Combine( sourcePath, @"Engine\Platforms\XB1\Content" );
+					string dstXB1ContentPath = Path.Combine( buildPath, @"Windows\Engine\Platforms\XB1\Content" );
+
+					CopyDirectory( srcXB1ContentPath, dstXB1ContentPath );
+
 					string srcXSXContentPath = Path.Combine(sourcePath, @"Engine\Platforms\XSX\Content");
 					string dstXSXContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\XSX\Content");
 
