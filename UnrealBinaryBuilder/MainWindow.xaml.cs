@@ -639,6 +639,15 @@ namespace UnrealBinaryBuilder
 					string dstPS4ContentPath = Path.Combine(buildPath, @"Windows\Engine\Platforms\PS4\Content");
 
 					CopyDirectory(srcPS4ContentPath, dstPS4ContentPath);
+
+					string srcPS4TMAPIPath = Path.Combine( sourcePath, @"Engine\Platforms\PS4\Source\ThirdParty\PS4TMAPI\Public" );
+
+					if ( Directory.Exists( srcPS4TMAPIPath ) )
+					{
+						string dstPS4TMAPIPath = Path.Combine( buildPath, @"Windows\Engine\Platforms\PS4\Source\ThirdParty\PS4TMAPI\Public" );
+
+						CopyDirectory( srcPS4TMAPIPath, dstPS4TMAPIPath );
+					}
 				}
 
 				if (bWithPS5.IsChecked == true)
