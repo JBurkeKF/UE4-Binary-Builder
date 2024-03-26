@@ -799,6 +799,7 @@ namespace UnrealBinaryBuilder
 		private void AddInstallScript(string sourcePath, string buildPath)
 		{
 			string srcInstallScriptPath = Path.Combine(sourcePath, "InstallEditor.ps1");
+			string srcInstallBatchPath = Path.Combine(sourcePath, "InstallEditor.bat");
 			string srcBuiltEngineIDPath = Path.Combine(sourcePath, "BuiltEngineID.txt");
 			string srcInstructionsPath = Path.Combine(sourcePath, "InstallInstructions.txt");
 
@@ -815,9 +816,19 @@ namespace UnrealBinaryBuilder
 					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcInstallScriptPath, e));
 				}
 			}
-			else
+
+			if (File.Exists(srcInstallBatchPath))
 			{
-				AddLogEntry("Install script does not exist at path [" + srcInstallScriptPath + "]");
+				string dstInstallBatchPath = Path.Combine(buildPath, @"Windows\InstallEditor.bat");
+
+				try
+				{
+					File.Copy(srcInstallBatchPath, dstInstallBatchPath, true);
+				}
+				catch (Exception e)
+				{
+					AddLogEntry(string.Format("Failed to copy file [{0}], {1}", srcInstallBatchPath, e));
+				}
 			}
 
 			string dstEngineIDPath = Path.Combine(buildPath, @"Windows\EngineID.txt");
