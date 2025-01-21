@@ -1145,7 +1145,7 @@ namespace UnrealBinaryBuilder
 				GameAnalyticsCSharp.AddDesignEvent("CommandLine:GameConfiguration:Reset");
 			}
 
-			string CommandLineArgs = string.Format("BuildGraph -target=\"Make Installed Build Win64\" -script={0} -set:WithDDC={1} -set:SignExecutables={2} -set:EmbedSrcSrvInfo={3} -set:GameConfigurations={4} -set:WithFullDebugInfo={5} -set:HostPlatformEditorOnly={6} -set:AnalyticsTypeOverride={7}",
+			string CommandLineArgs = string.Format("BuildGraph -target=\"Make Installed Build Win64\" -script={0} -set:WithDDC={1} -set:SignExecutables={2} -set:EmbedSrcSrvInfo={3} -set:GameConfigurations=\"{4}\" -set:WithFullDebugInfo={5} -set:HostPlatformEditorOnly={6} -set:AnalyticsTypeOverride={7}",
 					BuildXMLFile,
 					GetConditionalString(bWithDDC.IsChecked),
 					GetConditionalString(bSignExecutables.IsChecked),
@@ -1419,6 +1419,11 @@ namespace UnrealBinaryBuilder
 					RedirectStandardError = true,
 					RedirectStandardOutput = true
 				};
+
+				if (UnrealBinaryBuilderHelpers.IsUnrealEngine5)
+				{
+					AutomationStartInfo.FileName = Path.GetFullPath(AutomationExePath).Replace(@$"\Engine\Binaries\DotNET\{UnrealBinaryBuilderHelpers.AUTOMATION_TOOL_NAME}", @"\Engine\Build\BatchFiles").Replace(Path.GetFileName(AutomationExePath), "RunUAT.bat");
+				}
 
 				CreateProcess(AutomationStartInfo);
 
