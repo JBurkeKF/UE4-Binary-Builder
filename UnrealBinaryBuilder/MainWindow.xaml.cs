@@ -1454,6 +1454,8 @@ namespace UnrealBinaryBuilder
 
 		public bool SupportLinuxArm64 => IsUnrealEngine4() == false;
 
+		public bool SupportLinux64 => SupportLinuxAArch64 || SupportLinuxArm64;
+
 		public bool SupportConsoles => true;
 
 		public bool SupportVisualStudio2019 => IsUnrealEngine4() && IsEngineSelection425OrAbove;

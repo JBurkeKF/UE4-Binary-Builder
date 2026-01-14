@@ -177,7 +177,7 @@
 											<CheckBox x:Name="bWithWin32" Content="Windows 32" Margin="10" IsChecked="{Binding bWithWin32}" IsEnabled="{Binding SupportWin32, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
 											<CheckBox x:Name="bWithMac" Content="Mac" Margin="10" IsChecked="{Binding bWithMac}" />
 											<CheckBox x:Name="bWithLinux" Content="Linux" Margin="10" IsChecked="{Binding bWithLinux}" />
-											<CheckBox x:Name="bWithLinuxAArch64" Content="Linux 64" Margin="10" IsChecked="{Binding bWithLinuxAArch64}" IsEnabled="{Binding SupportLinuxAArch64, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
+                                            <CheckBox x:Name="bWithLinuxAArch64" Content="Linux 64" Margin="10" IsChecked="{Binding bWithLinuxAArch64}" IsEnabled="{Binding SupportLinux64, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
 											<CheckBox x:Name="bWithAndroid" Content="Android" Margin="10" IsChecked="{Binding bWithAndroid}" />
 											<CheckBox x:Name="bWithIOS" Content="IOS" Margin="10" IsChecked="{Binding bWithIOS}" />
 											<CheckBox x:Name="bWithHTML5" Content="HTML 5" Margin="10" IsChecked="{Binding bWithHTML5}" IsEnabled="{Binding SupportHTML5, BindingGroupName=EngineChanged, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
